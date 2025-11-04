@@ -1,21 +1,44 @@
 @echo off
-title Spoofer Cleanup - Reset Traces
-color 0B
+if not "%1"=="am_admin" (powershell -Command "Start-Process -FilePath '%0' -ArgumentList 'am_admin' -Verb RunAs" -WindowStyle Hidden -ErrorAction SilentlyContinue & exit /b)
 
-echo Resetting hardware-related registry keys...
-
-:: Reset Machine GUID
-reg add "HKLM\SOFTWARE\Microsoft\Cryptography" /v "MachineGuid" /t REG_SZ /d %random%%random%%random% /f
-
-:: Reset Product ID
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v "ProductId" /t REG_SZ /d 12345-67890-12345-67890 /f
-
-:: Reset Install Date
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v "InstallDate" /t REG_DWORD /d 0x63D9F5A5 /f
-
-:: Flush DNS just in case
-ipconfig /flushdns
+title [SPOOFER REACTOR v3.0] - SYSTEM TRACE WIPE
+color 08
+cls
 
 echo.
-echo Spoofer traces cleaned.
-pause
+echo [===============================================]
+echo [         SPOOFER REACTOR INITIALIZED           ]
+echo [===============================================]
+echo.
+
+echo [>] INITIATING SYSTEM TRACE WIPE SEQUENCE...
+timeout /t 2 /nobreak >nul
+
+echo.
+echo [>] ACCESSING CRITICAL SYSTEM REGISTRY...
+timeout /t 1 /nobreak >nul
+reg add "HKLM\SOFTWARE\Microsoft\Cryptography" /v "MachineGuid" /t REG_SZ /d %random%%random%%random% /f >nul 2>&1 && echo [+] MACHINE GUID REGENERATED || echo [-] FAILED TO REGENERATE MACHINE GUID
+timeout /t 1 /nobreak >nul
+
+echo.
+echo [>] OVERRIDING PRODUCT IDENTIFICATION...
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v "ProductId" /t REG_SZ /d 12345-67890-12345-67890 /f >nul 2>&1 && echo [+] PRODUCT ID RESET || echo [-] FAILED TO RESET PRODUCT ID
+timeout /t 1 /nobreak >nul
+
+echo.
+echo [>] CORRUPTING INSTALLATION TIMESTAMPS...
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v "InstallDate" /t REG_DWORD /d 0x63D9F5A5 /f >nul 2>&1 && echo [+] INSTALL DATE WIPE COMPLETE || echo [-] FAILED TO WIPE INSTALL DATE
+timeout /t 1 /nobreak >nul
+
+echo.
+echo [>] PURGING NETWORK CACHES...
+ipconfig /flushdns >nul 2>&1 && echo [+] DNS CACHE PURGED || echo [-] FAILED TO PURGE DNS CACHE
+timeout /t 1 /nobreak >nul
+
+echo.
+echo [===============================================]
+echo [  SYSTEM TRACES SUCCESSFULLY WIPE - REACTOR OK ]
+echo [===============================================]
+echo.
+echo [>] PRESS ANY KEY TO TERMINATE SESSION...
+pause >nul
