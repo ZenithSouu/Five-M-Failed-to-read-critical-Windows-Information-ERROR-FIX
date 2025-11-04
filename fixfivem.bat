@@ -1,5 +1,4 @@
 @echo off
-:: Vérification des droits admin
 net session >nul 2>&1
 if %errorLevel% neq 0 (
     echo.
@@ -22,8 +21,7 @@ if %errorLevel% neq 0 (
     )
 )
 
-:: Si on est admin, on continue
-title [SPOOFER REACTOR v3.0] - SYSTEM TRACE WIPE
+title [Fix FiveM Error] - SYSTEM TRACE WIPE
 color 08
 cls
 
@@ -83,3 +81,4 @@ echo [!] DO NOT CLOSE THIS WINDOW UNLESS INTENDED.
 echo.
 echo Press any key to terminate session...
 pause >nul
+
