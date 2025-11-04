@@ -1,29 +1,19 @@
 @echo off
-:: Vérification des droits admin
 net session >nul 2>&1
 if %errorLevel% neq 0 (
+    cls
+    color 0C
     echo.
-    echo [!] ADMIN RIGHTS REQUIRED.
-    echo [!] LAUNCHING ELEVATION MODULE...
-    timeout /t 2 /nobreak >nul
-    powershell -Command "Start-Process -FilePath '%0' -Verb RunAs" 2>nul
-    if %errorlevel% neq 0 (
-        cls
-        color 0C
-        echo.
-        echo [X] ELEVATION FAILED. PowerShell may be restricted.
-        echo [X] PLEASE RUN THIS SCRIPT AS ADMINISTRATOR MANUALLY.
-        echo.
-        echo Press any key to exit...
-        pause >nul
-        exit /b
-    ) else (
-        exit /b
-    )
+    echo [!] ADMINISTRATOR PRIVILEGES REQUIRED.
+    echo [!] PLEASE RIGHT-CLICK THIS FILE AND SELECT "RUN AS ADMINISTRATOR".
+    echo.
+    echo [!] THIS SCRIPT WILL NOT SELF-ELEVATE.
+    echo.
+    pause
+    exit /b
 )
 
-:: Si on est admin, on continue
-title [SPOOFER REACTOR v3.0] - SYSTEM TRACE WIPE
+title [Fix FiveM Error] - SYSTEM TRACE WIPE
 color 08
 cls
 
