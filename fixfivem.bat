@@ -4,6 +4,7 @@ if %errorLevel% neq 0 (
     echo.
     echo [!] ADMIN RIGHTS REQUIRED.
     echo [!] LAUNCHING ELEVATION MODULE...
+    powershell -Command "Start-Process -FilePath '%0' -Verb RunAs" 2>nul
     timeout /t 2 /nobreak >nul
     if %errorlevel% neq 0 (
         cls
@@ -80,5 +81,6 @@ echo [!] DO NOT CLOSE THIS WINDOW UNLESS INTENDED.
 echo.
 echo Press any key to terminate session...
 pause >nul
+
 
 
