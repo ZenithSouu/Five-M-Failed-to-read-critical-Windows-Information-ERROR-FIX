@@ -1,6 +1,28 @@
 @echo off
-if not "%1"=="am_admin" (powershell -Command "Start-Process -FilePath '%0' -ArgumentList 'am_admin' -Verb RunAs" -WindowStyle Hidden -ErrorAction SilentlyContinue & exit /b)
+:: Vérification des droits admin
+net session >nul 2>&1
+if %errorLevel% neq 0 (
+    echo.
+    echo [!] ADMIN RIGHTS REQUIRED.
+    echo [!] LAUNCHING ELEVATION MODULE...
+    timeout /t 2 /nobreak >nul
+    powershell -Command "Start-Process -FilePath '%0' -Verb RunAs" 2>nul
+    if %errorlevel% neq 0 (
+        cls
+        color 0C
+        echo.
+        echo [X] ELEVATION FAILED. PowerShell may be restricted.
+        echo [X] PLEASE RUN THIS SCRIPT AS ADMINISTRATOR MANUALLY.
+        echo.
+        echo Press any key to exit...
+        pause >nul
+        exit /b
+    ) else (
+        exit /b
+    )
+)
 
+:: Si on est admin, on continue
 title [SPOOFER REACTOR v3.0] - SYSTEM TRACE WIPE
 color 08
 cls
@@ -17,22 +39,38 @@ timeout /t 2 /nobreak >nul
 echo.
 echo [>] ACCESSING CRITICAL SYSTEM REGISTRY...
 timeout /t 1 /nobreak >nul
-reg add "HKLM\SOFTWARE\Microsoft\Cryptography" /v "MachineGuid" /t REG_SZ /d %random%%random%%random% /f >nul 2>&1 && echo [+] MACHINE GUID REGENERATED || echo [-] FAILED TO REGENERATE MACHINE GUID
+reg add "HKLM\SOFTWARE\Microsoft\Cryptography" /v "MachineGuid" /t REG_SZ /d %random%%random%%random% /f >nul 2>&1 && (
+    echo [+] MACHINE GUID REGENERATED
+) || (
+    echo [-] FAILED TO REGENERATE MACHINE GUID
+)
 timeout /t 1 /nobreak >nul
 
 echo.
 echo [>] OVERRIDING PRODUCT IDENTIFICATION...
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v "ProductId" /t REG_SZ /d 12345-67890-12345-67890 /f >nul 2>&1 && echo [+] PRODUCT ID RESET || echo [-] FAILED TO RESET PRODUCT ID
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v "ProductId" /t REG_SZ /d 12345-67890-12345-67890 /f >nul 2>&1 && (
+    echo [+] PRODUCT ID RESET
+) || (
+    echo [-] FAILED TO RESET PRODUCT ID
+)
 timeout /t 1 /nobreak >nul
 
 echo.
 echo [>] CORRUPTING INSTALLATION TIMESTAMPS...
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v "InstallDate" /t REG_DWORD /d 0x63D9F5A5 /f >nul 2>&1 && echo [+] INSTALL DATE WIPE COMPLETE || echo [-] FAILED TO WIPE INSTALL DATE
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v "InstallDate" /t REG_DWORD /d 0x63D9F5A5 /f >nul 2>&1 && (
+    echo [+] INSTALL DATE WIPE COMPLETE
+) || (
+    echo [-] FAILED TO WIPE INSTALL DATE
+)
 timeout /t 1 /nobreak >nul
 
 echo.
 echo [>] PURGING NETWORK CACHES...
-ipconfig /flushdns >nul 2>&1 && echo [+] DNS CACHE PURGED || echo [-] FAILED TO PURGE DNS CACHE
+ipconfig /flushdns >nul 2>&1 && (
+    echo [+] DNS CACHE PURGED
+) || (
+    echo [-] FAILED TO PURGE DNS CACHE
+)
 timeout /t 1 /nobreak >nul
 
 echo.
@@ -40,5 +78,8 @@ echo [===============================================]
 echo [  SYSTEM TRACES SUCCESSFULLY WIPE - REACTOR OK ]
 echo [===============================================]
 echo.
-echo [>] PRESS ANY KEY TO TERMINATE SESSION...
+echo [!] SPOOFER REACTOR REMAINING ACTIVE.
+echo [!] DO NOT CLOSE THIS WINDOW UNLESS INTENDED.
+echo.
+echo Press any key to terminate session...
 pause >nul
