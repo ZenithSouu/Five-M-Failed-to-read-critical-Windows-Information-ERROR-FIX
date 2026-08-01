@@ -19,7 +19,7 @@ cls
 
 echo.
 echo [===============================================]
-echo [         SPOOFER REACTOR INITIALIZED           ]
+echo [                FiveM Fixed                    ]
 echo [===============================================]
 echo.
 
@@ -68,7 +68,7 @@ echo [===============================================]
 echo [  SYSTEM TRACES SUCCESSFULLY WIPE - REACTOR OK ]
 echo [===============================================]
 echo.
-echo [!] SPOOFER REACTOR REMAINING ACTIVE.
+echo [!] FiveM Fix.
 echo [!] DO NOT CLOSE THIS WINDOW UNLESS INTENDED.
 echo.
 echo Press any key to terminate session...
